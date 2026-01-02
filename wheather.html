@@ -3,19 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="weather2.css"/>
-  <link rel="stylesheet" href="./wheather.css">
-  <title>Wheather Report</title>
+  <title>Weather Report</title>
+  <link rel="stylesheet" href="./whe.css" />
 </head>
-<body style=" 
-  background-image: url('https://th.bing.com/th/id/OIP.EHPbckY8psPuM9-nrDVZIwHaEo?w=238&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  margin: 0;
-  height: 100vh;
-">
->
+<body>
+
   <div class="container">
     <h1>Weather Application 🌦️</h1>
     <input type="text" id="city-name" placeholder="Enter city name" />
@@ -36,6 +28,12 @@
 
     async function getWeather(city) {
       document.getElementById("loading").textContent = "Loading...";
+      document.getElementById("cname").textContent = "";
+      document.getElementById("date").textContent = "";
+      document.getElementById("temperature").textContent = "";
+      document.getElementById("description").textContent = "";
+      document.getElementById("wind-speed").textContent = "";
+
       try {
         const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -56,22 +54,31 @@
 
     function setBackground(weather) {
       const bg = {
-        Clear: "Clear.jpg",
-        Clouds: "Cloudy.jpg",
-        Rain: "Rainy.jpg",
-        Mist: "Mist.jpg",
-        Thunderstorm: "Thunderstorm.jpg",
-        Snow: "Snow.jpg", 
+        Clear: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80",
+        Clouds: "https://images.unsplash.com/photo-1499346030926-9a72daac6c63?auto=format&fit=crop&w=1920&q=80",
+        Rain: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1920&q=80",
+        Mist: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1920&q=80",
+        Thunderstorm: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80",
+        Snow: "https://images.unsplash.com/photo-1600282432068-973fae847cd3?auto=format&fit=crop&w=1920&q=80",
       };
 
-      const imageUrl = bg[weather] || "default.jpg"; 
-      document.body.style.background = `url(${imageUrl}) no-repeat center center fixed`;
+      const imageUrl = bg[weather] || "https://images.unsplash.com/photo-1468071174046-657d9d351a40?auto=format&fit=crop&w=1920&q=80";
+      document.body.style.backgroundImage = `url(${imageUrl})`;
+      document.body.style.backgroundRepeat = "no-repeat";
+      document.body.style.backgroundPosition = "center";
       document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundAttachment = "fixed";
     }
 
     document.getElementById("city-btn").addEventListener("click", () => {
       const city = document.getElementById("city-name").value.trim();
       if (city) getWeather(city);
+    });
+
+    document.getElementById("city-name").addEventListener("keydown", (e) => {
+      if(e.key === "Enter"){
+        document.getElementById("city-btn").click();
+      }
     });
   </script>
 </body>
